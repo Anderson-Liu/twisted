@@ -512,14 +512,9 @@ class HTTPClientParser(HTTPParser):
                     b'content-length')
                 if contentLengthHeaders is None:
                     contentLength = None
-                elif len(contentLengthHeaders) == 1:
+                else:
                     contentLength = int(contentLengthHeaders[0])
                     self.response.length = contentLength
-                else:
-                    # "HTTP Message Splitting" or "HTTP Response Smuggling"
-                    # potentially happening.  Or it's just a buggy server.
-                    raise ValueError(u"Too many Content-Length headers; "
-                                     u"response is invalid")
 
                 if contentLength == 0:
                     self._finished(self.clearLineBuffer())
